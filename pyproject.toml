@@ -12,6 +12,7 @@ python = "^3.10"
 pytest = "^8.2.2"
 
 [tool.ruff]
+line-length = 120
 select = ["ALL"]
 ignore = ["D", "ANN101", "FA102"]
 

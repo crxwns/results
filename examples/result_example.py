@@ -1,11 +1,4 @@
-# Results
-
-Implementation of Rust's Result-Enum in Pyhon.
-
-# Example
-
-
-```python
+# ruff: noqa: INP001, T201, ARG005
 from results import Err, Ok, Result
 
 number = int | float
@@ -76,5 +69,3 @@ if __name__ == "__main__":
     print(f"unwrap_or_else(): {unwrap_or_else}")
 
     print("---")
-
-```
