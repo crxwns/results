@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "results"
+version = "0.1.0"
+description = ""
+authors = ["crxwns"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+
+[tool.ruff]
+select = ["ALL"]
+ignore = ["D", "ANN101", "FA102"]
+
+[tool.mypy]
+strict = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
