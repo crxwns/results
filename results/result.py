@@ -6,7 +6,7 @@ T = TypeVar("T")
 E = TypeVar("E", bound=Exception)
 
 
-class Mixin(ABC, Generic[T, E]):
+class _Mixin(ABC, Generic[T, E]):
     @abstractmethod
     def unwrap(self) -> T: ...
 
@@ -18,7 +18,7 @@ class Mixin(ABC, Generic[T, E]):
 
 
 @dataclass(frozen=True)
-class Ok(Mixin[T, E]):
+class Ok(_Mixin[T, E]):
     _value: T
 
     def is_ok(self) -> bool:
@@ -44,7 +44,7 @@ class Ok(Mixin[T, E]):
 
 
 @dataclass(frozen=True)
-class Err(Mixin[T, E]):
+class Err(_Mixin[T, E]):
     _error: E
 
     def is_ok(self) -> bool:
