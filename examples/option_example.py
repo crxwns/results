@@ -14,7 +14,7 @@ division_option_none = division(dividend=10, divisor=0)
 
 # Bool if Option is NONE or Some
 print(f"is_none: {division_option_some.is_none()}")
-print(f"is_none: {division_option_some.is_none()}")
+print(f"is_some: {division_option_some.is_some()}")
 
 # If Option is Some and condition is True returns bool
 print(f"is_some_and: {division_option_some.is_some_and(lambda x: x < 2)}")
