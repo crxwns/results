@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, Generic, TypeVar, Union
+from typing import Any, Callable, Generic, TypeVar, Union
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -100,6 +100,12 @@ class _OptionMixin(ABC, Generic[T]):
     @abstractmethod
     def map(self, op: Callable[[T], U]) -> "Option[U]": ...
 
+    @abstractmethod
+    def inspect(self, op: Callable[[T], Any]) -> "Option[T]": ...
+
+    @abstractmethod
+    def filter(self, op: Callable[[T], bool]) -> "Option[T]": ...
+
 
 @dataclass(frozen=True)
 class Some(_OptionMixin[T]):
@@ -132,6 +138,15 @@ class Some(_OptionMixin[T]):
     def map(self, op: Callable[[T], U]) -> "Option[U]":
         return Some(op(self.some()))
 
+    def inspect(self, op: Callable[[T], Any]) -> "Option[T]":
+        op(self.some())
+        return self
+
+    def filter(self, op: Callable[[T], bool]) -> "Option[T]":
+        if op(self.some()):
+            return self
+        return NONE()
+
 
 @dataclass(frozen=True)
 class NONE(_OptionMixin[T]):
@@ -157,7 +172,13 @@ class NONE(_OptionMixin[T]):
         return op()
 
     def map(self, op: Callable[[T], U]) -> "Option[U]":
-        return NONE()
+        return self
+
+    def inspect(self, op: Callable[[T], Any]) -> "Option[T]":
+        return self
+
+    def filter(self, op: Callable[[T], bool]) -> "Option[T]":
+        return self
 
 
 Option = Union[Some[T], NONE]

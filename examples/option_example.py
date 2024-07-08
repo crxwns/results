@@ -54,3 +54,8 @@ def double(las: list[int]) -> int:
 
 list_option = list_option_some()
 print(list_option.map(double).map(lambda x: x * 2).unwrap_or(0))
+
+print(list_option.inspect(lambda x: print(f"Hi {x[1]}")).unwrap())
+
+
+print(division_option_some.filter(lambda x: x % 2 != 0).unwrap())
