@@ -48,14 +48,16 @@ def list_option_some() -> Option[list[int]]:
     return Some([1, 2, 3, 4, 5])
 
 
-def double(las: list[int]) -> int:
-    return sum(las)
+def list_sum(inp: list[int]) -> int:
+    return sum(inp)
 
 
 list_option = list_option_some()
-print(list_option.map(double).map(lambda x: x * 2).unwrap_or(0))
+print(list_option.map(list_sum).map(lambda x: x * 2).unwrap_or(0))
 
+
+# Run Callable[[T], Any] when Some and return original Option
 print(list_option.inspect(lambda x: print(f"Hi {x[1]}")).unwrap())
 
-
+# Run Callable[[T], bool] to check if condition is met and return Some if True or NONE if False
 print(division_option_some.filter(lambda x: x % 2 != 0).unwrap())
