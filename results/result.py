@@ -36,16 +36,16 @@ class Ok(_ResultMixin[T, E]):
     def ok(self) -> T:
         return self._value
 
-    def expect(self, msg: str) -> T:  # noqa: ARG002
+    def expect(self, msg: str) -> T:
         return self.ok()
 
     def unwrap(self) -> T:
         return self.ok()
 
-    def unwrap_or(self, default: T) -> T:  # noqa: ARG002
+    def unwrap_or(self, default: T) -> T:
         return self.ok()
 
-    def unwrap_or_else(self, op: Callable[[E], T]) -> T:  # noqa: ARG002
+    def unwrap_or_else(self, op: Callable[[E], T]) -> T:
         return self.ok()
 
 
@@ -113,16 +113,16 @@ class Some(_OptionMixin[T]):
     def is_some_and(self, op: Callable[[T], bool]) -> bool:
         return op(self.some())
 
-    def expect(self, msg: str) -> T:  # noqa: ARG002
+    def expect(self, msg: str) -> T:
         return self.some()
 
     def unwrap(self) -> T:
         return self.some()
 
-    def unwrap_or(self, default: T) -> T:  # noqa: ARG002
+    def unwrap_or(self, default: T) -> T:
         return self.some()
 
-    def unwrap_or_else(self, op: Callable[[], T]) -> T:  # noqa: ARG002
+    def unwrap_or_else(self, op: Callable[[], T]) -> T:
         return self.some()
 
 
@@ -134,14 +134,14 @@ class NONE(_OptionMixin[T]):
     def is_none(self) -> bool:
         return True
 
-    def is_some_and(self, op: Callable[[T], bool]) -> bool:  # noqa: ARG002
+    def is_some_and(self, op: Callable[[T], bool]) -> bool:
         return False
 
     def expect(self, msg: str) -> T:
         raise ValueError(msg)
 
     def unwrap(self) -> T:
-        raise ValueError("Value is None.")  # noqa: EM101, TRY003
+        raise ValueError("Value is None.")
 
     def unwrap_or(self, default: T) -> T:
         return default

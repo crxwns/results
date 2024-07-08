@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["crxwns"]
 readme = "README.md"
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -14,7 +15,7 @@ pytest = "^8.2.2"
 [tool.ruff]
 line-length = 120
 select = ["ALL"]
-ignore = ["D", "ANN101", "FA102"]
+ignore = ["D", "ANN101", "FA102", "EM101", "TRY003", "ARG002"]
 
 [tool.mypy]
 strict = true
