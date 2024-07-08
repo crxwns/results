@@ -19,6 +19,7 @@ ignore = ["D", "ANN101", "FA102", "EM101", "TRY003", "ARG002"]
 
 [tool.ruff.extend-per-file-ignores]
 "examples/*" = ["INP001", "T201", "ARG005", "PLR2004"]
+"tests/*" = ["S101", "ARG005", "PLR2004"]
 
 [tool.mypy]
 strict = true
