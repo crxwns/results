@@ -1,19 +1,13 @@
-# ruff: noqa: INP001, T201, ARG005
 from results import Err, Ok, Result
 
 number = int | float
 
 
 def division(dividend: number, divisor: number) -> Result[number, Exception]:
-    """
-    Division of dividend/divisor returning a result of Ok(Union[float, int]) or Err(ZeroDevisionError)
-    """
-
     if divisor == 0:
         return Err(ZeroDivisionError("Cannot divide by 0."))
 
-    quotient = dividend / divisor
-    return Ok(quotient)
+    return Ok(dividend / divisor)
 
 
 def output_error(error: Exception) -> None:
