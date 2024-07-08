@@ -32,7 +32,7 @@ def parse_config_from_toml_string(config_str: str) -> Result[Config, Exception]:
 
     try:
         config = Config(**tool)
-    except ValueError as e:
+    except TypeError as e:
         return Err(e)
 
     return Ok(config)
