@@ -41,3 +41,16 @@ match division(dividend=5, divisor=1):
         print(f"Matched Some: {value}")
     case NONE():
         print("There's nothing.")
+
+
+# Map Option to a Callable[[T], U] which can be chained
+def list_option_some() -> Option[list[int]]:
+    return Some([1, 2, 3, 4, 5])
+
+
+def double(las: list[int]) -> int:
+    return sum(las)
+
+
+list_option = list_option_some()
+print(list_option.map(double).map(lambda x: x * 2).unwrap_or(0))

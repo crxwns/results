@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, Union
 
 T = TypeVar("T")
+U = TypeVar("U")
 E = TypeVar("E", bound=Exception)
 
 
@@ -96,6 +97,9 @@ class _OptionMixin(ABC, Generic[T]):
     @abstractmethod
     def unwrap_or_else(self, op: Callable[[], T]) -> T: ...
 
+    @abstractmethod
+    def map(self, op: Callable[[T], U]) -> "Option[U]": ...
+
 
 @dataclass(frozen=True)
 class Some(_OptionMixin[T]):
@@ -125,6 +129,9 @@ class Some(_OptionMixin[T]):
     def unwrap_or_else(self, op: Callable[[], T]) -> T:
         return self.some()
 
+    def map(self, op: Callable[[T], U]) -> "Option[U]":
+        return Some(op(self.some()))
+
 
 @dataclass(frozen=True)
 class NONE(_OptionMixin[T]):
@@ -148,6 +155,9 @@ class NONE(_OptionMixin[T]):
 
     def unwrap_or_else(self, op: Callable[[], T]) -> T:
         return op()
+
+    def map(self, op: Callable[[T], U]) -> "Option[U]":
+        return NONE()
 
 
 Option = Union[Some[T], NONE]
