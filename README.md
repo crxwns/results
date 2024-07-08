@@ -1,80 +1,70 @@
 # Results
 
-Implementation of Rust's Result-Enum in Pyhon.
+Implementation of Rust's Result- and Option-Type in Python.
 
-# Example
-
+Can be used to mimic similar behaviour as Rust to propagate Exceptions to the caller instead of handling them in the method itself and use default values if there is an `Error` or the `Option` is `None`.
 
 ```python
+from dataclasses import dataclass
+
+import tomllib
+
 from results import Err, Ok, Result
 
-number = int | float
+
+@dataclass
+class Config:
+    debug: bool
+    value: int
 
 
-def division(dividend: number, divisor: number) -> Result[number, Exception]:
-    """
-    Division of dividend/divisor returning a result of Ok(Union[float, int]) or Err(ZeroDevisionError)
-    """
+def parse_config_from_toml_string(config_str: str) -> Result[Config, Exception]:
+    """Takes in a TOML string and returns a Result[Config, Exception]"""
+    try:
+        data = tomllib.loads(config_str)
+    except tomllib.TOMLDecodeError as e:
+        return Err(e)
 
-    if divisor == 0:
-        return Err(ZeroDivisionError("Cannot divide by 0."))
+    tool = data.get("tool")
 
-    quotient = dividend / divisor
-    return Ok(quotient)
+    if not tool:
+        return Err(ValueError("No configuration for tool in config."))
 
+    try:
+        config = Config(**tool)
+    except ValueError as e:
+        return Err(e)
 
-def output_error(error: Exception) -> None:
-    print(f"Encountered {type(error).__name__}: {error}")
+    return Ok(config)
 
 
 if __name__ == "__main__":
-    print("---\nSince python 3.10 you can use the match-case syntax to match on the result")
+    valid_config_str = """[tool]
+    debug = true
+    value = 10"""
 
-    match division(dividend=10, divisor=2):
-        case Ok(value):
-            print(value)
-        case Err(e):
-            output_error(e)
+    invalid_config_str = """[wrong]
+    debug = true
+    value = 10"""
 
-    print("---")
+    valid_config_result = parse_config_from_toml_string(config_str=valid_config_str)
+    invalid_config_result = parse_config_from_toml_string(config_str=invalid_config_str)
 
-    print("Or use isinstance to check for Err or Ok")
+    # You can match on the result
 
-    division_result = division(dividend=10, divisor=0)
-    if isinstance(division_result, Err):
-        output_error(division_result.err())
+    match valid_config_result:
+        case Err(err):
+            print(err)
+        case Ok(config):
+            print(config)
 
-    print("---")
+    # Use a default for the config if Err
 
-    print("Or check if result.is_ok() / result.is_err()")
-
-    is_err = division_result.is_err()
-    print(f"is_err?: {is_err}")
-
-    print("---")
-
-    print("Use unwrap to raise the exception on Err")
-
-    try:
-        division_result.unwrap()
-    except ZeroDivisionError as e:
-        print("Catched Error", end=None)
-        output_error(e)
-
-    print("---")
-
-    print("Use unwrap_or to use a default value")
-
-    unwrap_or = division_result.unwrap_or(0)
-    print(f"unwrap_or(): {unwrap_or}")
-
-    print("---")
-
-    print("use unwrap_or_else to use a Callable[[E], T] taking in the exception and returning <T>")
-
-    unwrap_or_else = division_result.unwrap_or_else(lambda x: 2)
-    print(f"unwrap_or_else(): {unwrap_or_else}")
-
-    print("---")
+    print(invalid_config_result.unwrap_or(Config(debug=False, value=2)))
 
 ```
+
+# Examples
+
+- [Option[T]](examples/option_example.py)
+- [Result[T, E]](examples/result_example.py)
