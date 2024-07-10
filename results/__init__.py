@@ -1,3 +1,4 @@
-from .result import NONE, Err, Ok, Option, Result, Some
+from .option import NONE, Option, Some
+from .result import Err, Ok, Result
 
 __all__ = ["Err", "Ok", "Result", "Option", "Some", "NONE"]
