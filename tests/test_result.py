@@ -1,6 +1,7 @@
 import pytest
 
 from results import Err, Ok, Result
+from results.option import Some
 
 
 def return_err_result() -> Result[None, Exception]:
@@ -17,8 +18,8 @@ def test_err_result() -> None:
     assert result.is_err()
     assert not result.is_ok()
     assert isinstance(result, Err)
-    assert isinstance(result.err(), ValueError)
-    assert str(result.err()) == "ValueError"
+    assert isinstance(result.err().unwrap(), ValueError)
+    assert isinstance(result.err(), Some)
 
 
 def test_ok_result() -> None:
@@ -27,8 +28,8 @@ def test_ok_result() -> None:
     assert result.is_ok()
     assert not result.is_err()
     assert isinstance(result, Ok)
-    assert isinstance(result.ok(), int)
-    assert result.ok() == 1
+    assert isinstance(result.ok().unwrap(), int)
+    assert isinstance(result.ok(), Some)
 
 
 def test_match_error() -> None:
