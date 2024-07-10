@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     division_result = division(dividend=10, divisor=0)
     if isinstance(division_result, Err):
-        output_error(division_result.err())
+        output_error(division_result.err().unwrap())
 
     print("---")
 
