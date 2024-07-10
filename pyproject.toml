@@ -11,13 +11,15 @@ python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"
+mypy = "^1.10.1"
+ruff = "^0.5.1"
 
 [tool.ruff]
 line-length = 120
-select = ["ALL"]
-ignore = ["D", "ANN101", "FA102", "EM101", "TRY003", "ARG002"]
+lint.select = ["ALL"]
+lint.ignore = ["D", "ANN101", "FA102", "EM101", "TRY003", "ARG002"]
 
-[tool.ruff.extend-per-file-ignores]
+[tool.ruff.lint.extend-per-file-ignores]
 "examples/*" = ["INP001", "T201", "ARG005", "PLR2004"]
 "tests/*" = ["S101", "ARG005", "PLR2004"]
 
