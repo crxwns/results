@@ -40,6 +40,12 @@ class _ResultMixin(ABC, Generic[T, E]):
     @abstractmethod
     def ok(self) -> Option[T]: ...
 
+    @abstractmethod
+    def map(self, op: Callable[[T], U]) -> "Result[U, E]": ...
+
+    @abstractmethod
+    def and_then(self, op: Callable[[T], "Result[U, E]"]) -> "Result[U, E]": ...
+
 
 @dataclass(frozen=True)
 class Ok(_ResultMixin[T, E]):
@@ -74,6 +80,12 @@ class Ok(_ResultMixin[T, E]):
 
     def unwrap_or_else(self, op: Callable[[E], T]) -> T:
         return self._value
+
+    def map(self, op: Callable[[T], U]) -> "Result[U, E]":
+        return Ok(op(self._value))
+
+    def and_then(self, op: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
+        return op(self._value)
 
 
 @dataclass(frozen=True)
@@ -111,6 +123,12 @@ class Err(_ResultMixin[T, E]):
 
     def unwrap_or_else(self, op: Callable[[E], T]) -> T:
         return op(self._error)
+
+    def map(self, op: Callable[[T], U]) -> "Result[U, E]":
+        return Err(self._error)
+
+    def and_then(self, op: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
+        return Err(self._error)
 
 
 Result = Union[Ok[T, E], Err[T, E]]

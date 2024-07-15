@@ -57,3 +57,26 @@ def test_equality() -> None:
     assert Ok(1) == Ok(1)
     assert Ok(1) != Ok(2)
     assert Ok(exc) != Err(exc)  # type: ignore[comparison-overlap]
+
+
+def double(value: int) -> int:
+    return value * 2
+
+
+def test_map() -> None:
+    assert isinstance(Ok(5).map(double), Ok)
+    assert isinstance(Err(Exception("Hi")).map(double), Err)
+    assert isinstance(Ok(2).map(double).map(lambda x: x * 10), Ok)
+
+
+def intify(value: str) -> Result[int, ValueError]:
+    try:
+        return Ok(int(value))
+    except ValueError as e:
+        return Err(e)
+
+
+def test_and_then() -> None:
+    assert isinstance(Ok("5").and_then(intify), Ok)
+    assert isinstance(Ok("5").and_then(intify).map(lambda x: x * 5), Ok)
+    assert isinstance(Ok("a").and_then(intify), Err)
